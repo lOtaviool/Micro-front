@@ -1,0 +1,25 @@
+{
+    "applications": [
+      {
+        "name": "@lool/nav-bar",
+        "path": "/",
+        "url": "http://localhost:8081/lool-nav-bar.js"
+      },
+      {
+        "name": "@lool/app1",
+        "path": "/app1",
+        "url": "http://localhost:8080/lool-app1.js"
+      },
+      {
+        "name": "@lool/app2",
+        "path": "/app2",
+        "url": "http://localhost:8082/main.js"
+      },
+      {
+        "name": "@lool/app3",
+        "path": "/app3",
+        "url": "http://localhost:8083/js/app.js"
+      }
+      
+    ]
+}
