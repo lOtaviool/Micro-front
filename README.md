@@ -15,4 +15,4 @@ app2 - (app angular)
 C:\...\Micro-front\app2> npm run start -- --port 8082
 
 app3 - (app vue)
-C:\...\Micro-front\app3> npm run start -- --port 8083
+C:\...\Micro-front\app3> npm run serve -- --port 8083
