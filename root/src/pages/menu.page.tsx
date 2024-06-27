@@ -82,21 +82,19 @@ async function CreateLayout(): Promise<void>{
 }
 
 async function sendData() {
-  const userName = 'lOtaviool';
-  fetch(`https://api.github.com/users/${userName}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Erro ao buscar usuário no GitHub');
-    }
-    return response.json();
-  })
-  .then(data=>{
-    sessionStorage.setItem('user', JSON.stringify(data));
-  })
-  .catch(error => {
-    console.error('Erro:', error);
-  });
+  const userData = {
+    id: "uuid",
+    externalId: 12345,
+    name: "Luis Teste",
+    login: "luis.teste@anota.ai",
+    permissions: [
+        "UPDATE_PRODUCT",
+        "VIEW_PRODUCT",
+    ],
+    profile: "Tech"
+  }
 
+  sessionStorage.setItem('user', JSON.stringify(userData));
   
 }
 
@@ -104,6 +102,7 @@ export default async function MenuPage(): Promise<void>{
   await sendData();
   await buildImportMap();
   await CreateLayout();
+
 }
 
 MenuPage()

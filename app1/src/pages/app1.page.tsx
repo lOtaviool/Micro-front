@@ -16,9 +16,7 @@ const App: React.FC = () => {
     </div>
     {userData ? (
         <>
-        <h2>É um prazer conhecê-lo {userData?.login}</h2>
-        <h3>Seu id é: {userData?.id}</h3>
-        <h3>Seu token é: {userData?.node_id}</h3>
+        <h2>Seja Bem Vindo {userData?.name}!</h2>
         </>
     ) : (
         <h2>Carregando dados do usuário...</h2>

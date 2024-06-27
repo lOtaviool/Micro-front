@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './sidebar.scss';
 
@@ -6,21 +6,29 @@ interface Props {
   user: any,
 }
 
+interface Application {
+  name?: string,
+  path?: string,
+  type?: string,
+  tag?: string,
+  role?: string,
+}
+
 const Sidebar: React.FC<Props> = ({user}) => {
+  const [applications, setApplications] = useState<Application[]>([]);
   const navigate = useNavigate();
 
+  const handleClick = (path: string, type: string)=>{
 
-  const handleClick = (path: string, userdata: any, local: string)=>{
-
-    switch (local){
-      case 'react':
+    switch (type){
+      case 'React':
         navigate(path, {state: user})
         break;
-      case 'angular':
+      case 'Angular':
         dispatchEvent(new CustomEvent('userAngular', { detail: user}))
         navigate(path)
         break;
-      case 'vue':
+      case 'Vue':
         dispatchEvent(new CustomEvent('userVue', { detail: user}))
         navigate(path)
         break;
@@ -31,25 +39,35 @@ const Sidebar: React.FC<Props> = ({user}) => {
     
   }
 
+  useEffect( () => {
+    fetch('app-config.json')
+      .then(response => response.json())
+      .then(data => {
+        const filteredApps = data.applications.filter((app: Application) =>
+           user.permissions.includes(app.role)
+        );
+        setApplications(filteredApps);
+      })
+      .catch(error => console.error('Error loading manifest:', error));
+  }, [user.permissions]);
 
   return (
-      <div className="sidebar">
+      <>
+        <div className="sidebar">
         <h2>Back-Office Anota</h2>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <a onClick={() => handleClick('/app1', user, 'react')}>App1</a>
-          </li>
-          <li>
-            <a onClick={() => handleClick('/app2', user, 'angular')}>App2</a>
-          </li>
-          <li>
-            <a onClick={() => handleClick('/app3', user, 'vue')}>App3</a>
-          </li>
-        </ul>
-      </div>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            {applications.map((app, index) => (
+              <li key={index}>
+                <a onClick={() => handleClick(app.path, app.type)}>{app.tag}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      
+      </>
   );
 };
 

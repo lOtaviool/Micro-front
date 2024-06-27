@@ -8,17 +8,26 @@
       {
         "name": "@lool/app1",
         "path": "/app1",
-        "url": "http://localhost:8080/lool-app1.js"
+        "url": "http://localhost:8080/lool-app1.js",
+        "type": "React",
+        "tag": "App-A",
+        "role": "UPDATE_PRODUCT"
       },
       {
         "name": "@lool/app2",
         "path": "/app2",
-        "url": "http://localhost:8082/main.js"
+        "url": "http://localhost:8082/main.js",
+        "type": "Angular",
+        "tag": "App-B",
+        "role": "UPDATE_PRODUCT"
       },
       {
         "name": "@lool/app3",
         "path": "/app3",
-        "url": "http://localhost:8083/js/app.js"
+        "url": "http://localhost:8083/js/app.js",
+        "type": "Vue",
+        "tag": "App-C",
+        "role": "UPDATE_PRODUCT"
       }
       
     ]
