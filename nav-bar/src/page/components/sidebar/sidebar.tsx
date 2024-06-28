@@ -39,17 +39,26 @@ const Sidebar: React.FC<Props> = ({user}) => {
     
   }
 
-  useEffect( () => {
-    fetch('app-config.json')
-      .then(response => response.json())
-      .then(data => {
-        const filteredApps = data.applications.filter((app: Application) =>
-           user.permissions.includes(app.role)
-        );
-        setApplications(filteredApps);
-      })
-      .catch(error => console.error('Error loading manifest:', error));
-  }, [user.permissions]);
+  useEffect(() => {
+    const loadApplications = async () => {
+      try {
+        const response = await fetch('app-config.json');
+        const data = await response.json();
+        
+        if (user && user.permissions) {
+          const filteredApps = data.applications.filter((app: Application) =>
+            user.permissions.includes(app.role)
+          );
+          setApplications(filteredApps);
+        } 
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    loadApplications();
+  }, [user]);
 
   return (
       <>

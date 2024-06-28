@@ -4,6 +4,8 @@ import {
   constructRoutes,
   constructLayoutEngine,
 } from "single-spa-layout";
+import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
 
 interface AppConfig {
   applications: Application[];
@@ -14,6 +16,8 @@ interface Application {
   path: string;
   url: string;
 }
+
+const secretKey = CryptoJS.enc.Utf8.parse('12345678901234567890123456789012');
 
 async function loadAppConfig(): Promise<AppConfig> {
   const response = await fetch('app-config.json');
@@ -71,14 +75,31 @@ async function CreateLayout(): Promise<void>{
     },
   });
 
-  
-  
   const layoutEngine = constructLayoutEngine({routes: routes, applications: applications});
-  
   
   applications.forEach(registerApplication);
   layoutEngine.activate();
   start();
+}
+
+function encryptData(data) { 
+  try {
+    const stringData = JSON.stringify(data);
+    const encrypted = CryptoJS.AES.encrypt(stringData, secretKey, { 
+      mode: CryptoJS.mode.ECB, 
+      padding: CryptoJS.pad.Pkcs7 
+    });
+    return encrypted.toString();
+
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+function setSecureCookie(data) {
+  const encryptedData = encryptData(data);
+  Cookies.set('secureData', encryptedData, { expires: 7, secure: true, sameSite: 'Strict' });
 }
 
 async function sendData() {
@@ -94,7 +115,7 @@ async function sendData() {
     profile: "Tech"
   }
 
-  sessionStorage.setItem('user', JSON.stringify(userData));
+  setSecureCookie(userData);
   
 }
 
